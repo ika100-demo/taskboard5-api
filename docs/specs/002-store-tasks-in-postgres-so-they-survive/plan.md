@@ -10,6 +10,7 @@ tasks:
     covers: [AC-002.1, AC-002.2, AC-002.3, AC-002.4, AC-002.5, AC-002.6]
     parallel_safe: true
     depends_on: []
+    done: true
   - id: t2
     title: Postgres test fixtures and retire the AC-001.7 test
     files: [tests/conftest.py, tests/test_tasks.py]
