@@ -17,6 +17,7 @@ tasks:
     covers: [AC-002.1, AC-002.3, AC-002.6]
     parallel_safe: true
     depends_on: [t1]
+    done: true
   - id: t3
     title: App factory, schema at startup, 503 handler and database-aware /ready
     files: [src/taskboard5_api/main.py, src/taskboard5_api/tasks/router.py, docs/env-vars.md]
