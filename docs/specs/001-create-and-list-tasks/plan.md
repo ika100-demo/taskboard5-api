@@ -1,20 +1,20 @@
 ---
 spec_id: 001-create-and-list-tasks
 shape: service-python
-spec_hash: 756184979554
+spec_hash: 9f5f8888a13e
 summary: In-memory POST /tasks and GET /tasks with strict title and due-date validation, one replica pinned in gitops
 tasks:
   - id: t1
     title: Add task models and the in-memory task store
     files: [src/taskboard5_api/tasks/__init__.py, src/taskboard5_api/tasks/models.py, src/taskboard5_api/tasks/store.py]
-    covers: [AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.7, AC-001.8]
+    covers: [AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.8]
     parallel_safe: true
     depends_on: []
     done: true
   - id: t2
     title: Add the tasks router and mount it in the app
     files: [src/taskboard5_api/tasks/router.py, src/taskboard5_api/tasks/__init__.py, src/taskboard5_api/main.py]
-    covers: [AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.7, AC-001.8]
+    covers: [AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.8]
     parallel_safe: false
     depends_on: [t1]
     done: true
@@ -36,7 +36,7 @@ Contract, validation rules and the test seam are in [design.md](design.md). Leve
 ## t1 — Add task models and the in-memory task store
 
 **Files:** src/taskboard5_api/tasks/__init__.py, src/taskboard5_api/tasks/models.py, src/taskboard5_api/tasks/store.py
-**Covers:** AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.7, AC-001.8
+**Covers:** AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.8
 **Goal:** the request/response models that encode every validation rule of the spec, and a thread-safe, insertion-ordered in-memory store reachable through a FastAPI dependency that tests can override.
 
 **Implementation notes:**
@@ -53,7 +53,7 @@ Contract, validation rules and the test seam are in [design.md](design.md). Leve
 ## t2 — Add the tasks router and mount it in the app
 
 **Files:** src/taskboard5_api/tasks/router.py, src/taskboard5_api/tasks/__init__.py, src/taskboard5_api/main.py
-**Covers:** AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.7, AC-001.8
+**Covers:** AC-001.1, AC-001.2, AC-001.3, AC-001.4, AC-001.5, AC-001.6, AC-001.8
 **Goal:** expose `POST /tasks` (201) and `GET /tasks` (200) exactly as the design contract states, backed by the store from t1.
 
 **Implementation notes:**

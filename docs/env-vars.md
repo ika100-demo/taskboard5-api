@@ -9,6 +9,13 @@ Configuration is read exclusively from environment variables. Defaults below are
 | `PORT` | `8080` | HTTP port the service listens on. |
 | `LOG_LEVEL` | `INFO` | Logging level. One of `DEBUG`, `INFO`, `WARNING`, `ERROR`. |
 
+## Storage
+
+| Variable | Default | Description |
+|---|---|---|
+| `DATABASE_URL` | _(unset)_ | Postgres connection URL for task storage. No default: when unset, task routes answer 503 and `/ready` answers 503 (`/health` stays 200). The schema is created at startup. Timeouts are fixed: 2 s connect, 3 s per statement. |
+| `TEST_DATABASE_URL` | _(unset)_ | Postgres URL used by the test suite only; never read by the service. |
+
 ## Observability
 
 | Variable | Default | Description |

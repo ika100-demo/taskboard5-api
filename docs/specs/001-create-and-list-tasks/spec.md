@@ -26,18 +26,18 @@ As a client of the Task API, I want to list all tasks, so that I can show what h
 - **AC-001.4** Given the service is running, when a caller sends `POST /tasks` with a `due_date` that is not a calendar date in `YYYY-MM-DD` form (for example `"tomorrow"`, `"2026-13-01"`, `"2026-02-30"` or `"2026-12-01T10:00:00"`), then the response is `422` with the framework's standard validation error body naming the `due_date` field, and no task is added to the list.
 - **AC-001.5** Given tasks "A", "B" and "C" were created in that order, when a caller sends `GET /tasks`, then the response is `200` with a JSON array of those three tasks in creation order (oldest first), each with `id`, `title` and `due_date` as they were returned on creation. (smoke)
 - **AC-001.6** Given no task has been created since the service started, when a caller sends `GET /tasks`, then the response is `200` with an empty JSON array `[]`.
-- **AC-001.7** Given tasks were created, when the service restarts, then `GET /tasks` returns `[]` (tasks are kept in memory only, in every environment).
+- ~~**AC-001.7**~~ withdrawn 2026-11-06: tasks are now stored in Postgres and survive restarts (spec 002, system plan 001-persistent-tasks-and-web-task-board).
 - **AC-001.8** Given the service is running, when a caller sends `POST /tasks` with `{"title": "  Buy milk "}` (a 200-character title is also accepted), then the response is `201` and the title in the response and in `GET /tasks` is exactly as sent, without trimming.
 
 ## Non-goals
 
-- Persistent storage; tasks are lost on restart.
+- ~~Persistent storage; tasks are lost on restart.~~ Withdrawn 2026-11-06: spec 002 stores tasks in Postgres.
 - A cap on the number of tasks held in memory.
 - Reading, updating, completing or deleting a single task.
 - Filtering, sorting options, search or pagination of the list.
 - Authentication, users or per-user task lists.
 - A version prefix on the path.
-- Consistency across several running instances. Deployment dependency: the taskboard5 system runs this service with exactly one replica until storage exists; that is set in the taskboard5 gitops repo's `system.yaml`, not in this repo.
+- ~~Consistency across several running instances.~~ Withdrawn 2026-11-06: spec 002 shares one Postgres database between every instance; the one-replica deployment dependency no longer applies.
 
 ## Open questions
 
@@ -59,3 +59,4 @@ As a client of the Task API, I want to list all tasks, so that I can show what h
 - 2026-11-06 approved
 - 2026-11-06 building
 - 2026-11-06 done
+- 2026-11-06 amended by spec 002 (system plan 001-persistent-tasks-and-web-task-board): AC-001.7 withdrawn; non-goals "Persistent storage" and "Consistency across several running instances" withdrawn. Every other criterion stays and must keep passing against Postgres.

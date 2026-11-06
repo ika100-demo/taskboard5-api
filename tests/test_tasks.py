@@ -1,4 +1,4 @@
-"""Acceptance tests for spec 001: create and list tasks."""
+"""Acceptance tests for spec 001: create and list tasks, run against Postgres."""
 
 from __future__ import annotations
 
@@ -8,20 +8,14 @@ from collections.abc import Iterator
 import pytest
 from fastapi.testclient import TestClient
 
-from taskboard5_api.main import app
+from taskboard5_api.main import create_app
 
 
 @pytest.fixture()
-def tasks_client() -> Iterator[TestClient]:
-    """A client whose app uses a fresh, empty TaskStore."""
-    from taskboard5_api.tasks import TaskStore, get_task_store
-
-    store = TaskStore()
-    app.dependency_overrides[get_task_store] = lambda: store
-    try:
-        yield TestClient(app)
-    finally:
-        app.dependency_overrides.pop(get_task_store, None)
+def tasks_client(empty_database) -> Iterator[TestClient]:
+    """A client whose app uses an empty Postgres tasks table."""
+    with TestClient(create_app()) as test_client:
+        yield test_client
 
 
 def _assert_loc(response, field: str) -> None:
@@ -87,22 +81,6 @@ def test_list_is_empty_initially(tasks_client):  # AC-001.6
     response = tasks_client.get("/tasks")
     assert response.status_code == 200
     assert response.json() == []
-
-
-def test_restart_loses_tasks():  # AC-001.7
-    from taskboard5_api.tasks import TaskStore, get_task_store
-
-    first = TaskStore()
-    try:
-        app.dependency_overrides[get_task_store] = lambda: first
-        client = TestClient(app)
-        assert client.post("/tasks", json={"title": "kept"}).status_code == 201
-        assert len(client.get("/tasks").json()) == 1
-        fresh = TaskStore()
-        app.dependency_overrides[get_task_store] = lambda: fresh
-        assert client.get("/tasks").json() == []
-    finally:
-        app.dependency_overrides.pop(get_task_store, None)
 
 
 @pytest.mark.parametrize("title", ["  Buy milk ", "y" * 200])
