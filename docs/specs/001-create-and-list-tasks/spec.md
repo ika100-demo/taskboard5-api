@@ -1,7 +1,7 @@
 ---
 spec_id: 001-create-and-list-tasks
 title: Create and list tasks
-status: draft
+status: approved
 priority: P1
 shape: service-python
 ---
@@ -56,3 +56,4 @@ As a client of the Task API, I want to list all tasks, so that I can show what h
 
 - 2026-11-06 created
 - 2026-11-06 amended: open questions answered; clarified AC-001.2 (past dates accepted), AC-001.3/AC-001.4 (standard error body), AC-001.5 (oldest first), AC-001.7 (every environment); added AC-001.8 (title stored without trimming); one-replica deployment dependency recorded under Non-goals.
+- 2026-11-06 approved
